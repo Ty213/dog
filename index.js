@@ -1,6 +1,11 @@
 const GRAVITY = 1.5;
 const GROUND = 180;
 var counter = 0;
+var level = 100;
+
+var img = new Image();
+img.src = './img/coin.png';
+
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 
@@ -28,15 +33,12 @@ function drawHydrant() {
 
 function keyDownHandler(e) {
     if(e.keyCode == 32) {
-			console.log(e);
-			console.log('key down');
         spacePressed = true;                  
     }
 }
 
 function keyUpHandler(e) {
     if(e.keyCode == 32) {
-			console.log('key up');
         spacePressed = false;
     }
 }
@@ -61,13 +63,31 @@ class Hydrant {
         this.y = y;
 		this.width = width;
 		this.height = height;
-    }
-    render() {
-        ctx.fillStyle = 'rgb(255, 0, 0)';
-		ctx.fillRect(this.x, this.y, this.width, this.height);
+		this.img = new Image();
+		this.img.src = './img/coin.png';
 	}
+	drawImg() {
+		ctx.drawImage(this.img,this.width,this.height);
+	}
+    render() {
+		this.img.onload = function() {
+			drawImg();
+		}
+        // ctx.fillStyle = 'rgb(255, 0, 0)';
+		// ctx.fillRect(this.x, this.y, this.width, this.height);
+	}
+	
 
 }
+
+// function make_base()
+// {
+//   base_image = new Image();
+//   base_image.src = 'img/base.png';
+//   base_image.onload = function(){
+//     context.drawImage(base_image, base_image.width, base_image.height);
+//   }
+// }
 
 var hydrant = new Hydrant(canvas.width - 30, canvas.height-65, 25, 45);
 var dog = new Dog(70,canvas.height-55, 35, 35);
@@ -93,8 +113,11 @@ function draw() {
 	  ctx.fillStyle = "rgb(0,0,0)"
 	  ctx.fillText(Math.floor(counter / 20),canvas.width - 30,15);
 	  counter ++;
-	  if(Math.floor(counter /(speed * 10)) > 100) {
-		  speed += 0.1;
+	  if(Math.floor(counter /(speed * 10)) > level) {
+
+		  speed += 0.4;
+		  console.log(speed);
+		  level += 100;
 	  }
 }
 var gameDraw = setInterval(draw, 10);
